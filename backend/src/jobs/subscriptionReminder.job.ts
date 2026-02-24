@@ -5,9 +5,7 @@ import dayjs from "dayjs";
 import { sendEmail } from "../services/email.service.js";
 
 export function startSubscriptionReminderJob() {
-  cron.schedule("32 16 * * *", async () => {
-    console.log("Executando tarefa de lembrete de assinatura...");
-
+  cron.schedule("0 9 * * *", async () => {
     const subscriptions = await prisma.subscription.findMany({
       where: {
         isActive: true,
@@ -16,8 +14,6 @@ export function startSubscriptionReminderJob() {
         user: true,
       },
     });
-
-    console.log("Assinaturas encontradas: ", subscriptions);
 
     const today = dayjs().startOf("day");
 

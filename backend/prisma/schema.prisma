@@ -6,3 +6,89 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+  CUSTOM
+}
+
+enum Notificationtype {
+  EMAIL
+  PUSH
+}
+
+enum NotificationStatus {
+  SENT
+  FAILED
+}
+
+model User {
+  id            String            @id @default(uuid())
+  name          String
+  email         String            @unique
+  password      String
+  subscriptions Subscription[]
+  devices       Device[]
+  notifications NotificationLog[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model Subscription {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal @db.Decimal(10, 2)
+  currency    String  @default("BRL")
+
+  billingCycle       BillingCycle
+  customIntervalDays Int?
+
+  nextBillingDate    DateTime
+  reminderDaysBefore Int      @default(3)
+
+  isActive Boolean @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  notifications NotificationLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([nextBillingDate])
+}
+
+model Device {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  platform  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model NotificationLog {
+  id String @id @default(uuid())
+
+  type         Notificationtype
+  status       NotificationStatus
+  errorMessage String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+
+  sentAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([sentAt])
+}

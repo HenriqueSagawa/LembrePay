@@ -34,4 +34,4 @@ coverage/
 # Cache
 .eslintcache
 .npm
-/generated/prisma
+src/generated/prisma

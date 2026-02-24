@@ -45,6 +45,7 @@ model Subscription {
   billingCycle       BillingCycle
   customIntervalDays Int?
 
+  startDate          DateTime
   nextBillingDate    DateTime
   reminderDaysBefore Int      @default(3)
 

@@ -14,9 +14,14 @@ export class SubscriptionController {
   }
 
   async list(req: Request, res: Response) {
-    const subscriptions = await service.list(req.userId!);
+    const page = Math.max(1, Number(req.query["page"]) || 1);
+    const pageSize = Math.min(
+      100,
+      Math.max(1, Number(req.query["pageSize"]) || 20),
+    );
+    const result = await service.list(req.userId!, page, pageSize);
 
-    return res.json(subscriptions);
+    return res.json(result);
   }
 
   async deactivate(req: Request, res: Response) {

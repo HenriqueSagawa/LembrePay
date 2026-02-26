@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -19,7 +19,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
@@ -30,7 +30,7 @@ api.interceptors.response.use(
       await AsyncStorage.removeItem("@lembrepay:user");
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export const authAPI = {
@@ -56,6 +56,5 @@ export const subscriptionsAPI = {
     reminderDaysBefore?: number;
   }) => api.post("/subscriptions", data),
 
-  deactivate: (id: string) =>
-    api.patch(`/subscriptions/${id}/deactive`),
+  deactivate: (id: string) => api.patch(`/subscriptions/${id}/deactive`),
 };

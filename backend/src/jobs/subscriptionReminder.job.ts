@@ -5,7 +5,7 @@ import { sendEmail } from "../services/email.service.js"
 import { advanceNextBillingDate } from "../utils/date.utils.js"
 
 export function startSubscriptionReminderJob() {
-  cron.schedule("8 10 * * *", async () => {
+  cron.schedule("0 8 * * *", async () => {
     console.log("[CronJob] Iniciando verificação de assinaturas...")
 
     const subscriptions = await prisma.subscription.findMany({

@@ -1,10 +1,19 @@
-import { app } from "./app.js";
-import { startSubscriptionReminderJob } from "./jobs/subscriptionReminder.job.js";
+import { app } from "./app.js"
+import { startSubscriptionReminderJob } from "./jobs/subscriptionReminder.job.js"
 
-startSubscriptionReminderJob();
+const requiredEnvVars = ["DATABASE_URL", "JWT_SECRET", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"]
 
-const PORT = process.env.PORT;
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    console.error(`[Server] Variável de ambiente obrigatória não definida: ${envVar}`)
+    process.exit(1)
+  }
+}
+
+startSubscriptionReminderJob()
+
+const PORT = process.env.PORT ?? 3000
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+  console.log(`[Server] Servidor rodando na porta ${PORT}`)
+})

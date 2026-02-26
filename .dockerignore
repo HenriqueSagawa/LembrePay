@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/.expo
+**/.next
+**/.turbo
+**/.cache
+**/.git
+**/.github
+**/*.log
+**/.env
+**/.env.*
+
+

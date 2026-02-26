@@ -57,6 +57,19 @@ npx expo start
 
 ---
 
+## 🐳 Rodando backend com Docker
+
+Na raiz do repositório, suba API + Postgres + MailHog com:
+
+```bash
+docker compose up --build
+```
+
+- **API**: `http://localhost:3000`
+- **MailHog (UI)**: `http://localhost:8025`
+
+---
+
 ## 📝 Licença
 
 Este projeto está sob a licença ISC. Veja o arquivo de licença para mais detalhes.

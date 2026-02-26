@@ -38,9 +38,10 @@ O backend do **LembrePay** é uma API RESTful desenvolvida com **Node.js** e **T
     ```env
     DATABASE_URL="postgresql://user:password@localhost:5432/lembrepay"
     JWT_SECRET="sua_chave_secreta"
-    EMAIL_HOST="smtp.exemplo.com"
-    EMAIL_USER="seu_email@exemplo.com"
-    EMAIL_PASS="sua_senha"
+    SMTP_HOST="smtp.exemplo.com"
+    SMTP_PORT="587"
+    SMTP_USER="seu_email@exemplo.com"
+    SMTP_PASS="sua_senha"
     ```
 4.  Execute as migrações do banco de dados:
     ```bash
@@ -51,6 +52,20 @@ O backend do **LembrePay** é uma API RESTful desenvolvida com **Node.js** e **T
     ```bash
     npm run dev
     ```
+
+---
+
+## 🐳 Rodando com Docker (API + Postgres + SMTP fake)
+
+Na raiz do repositório (`/LembrePay`), execute:
+
+```bash
+docker compose up --build
+```
+
+- A API sobe em `http://localhost:3000`
+- O Postgres fica em `localhost:5432` (db: `lembrepay`, user/pass: `postgres`)
+- O MailHog (captura de e-mails) fica em `http://localhost:8025` e o SMTP em `localhost:1025`
 
 ---
 
